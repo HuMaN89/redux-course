@@ -6,16 +6,24 @@ const addBtn = document.querySelector("#add"),
   counter = document.querySelector("#counter"),
   theme = document.querySelector("#theme");
 
-counter.innerHTML = 0;
+let state = 0;
 
+function render() {
+  counter.textContent = state;
+}
 function add() {
-  return (counter.innerHTML = +counter.innerHTML + 1);
+  state++;
+  render();
 }
 function del() {
-  return (counter.innerHTML = +counter.innerHTML - 1);
+  state--;
+  render();
 }
 function as() {
-  return (counter.innerHTML = Math.round(Math.random() * 10));
+  setTimeout(() => {
+    state++;
+    render();
+  }, 2000);
 }
 
 addBtn.addEventListener("click", add);
@@ -24,3 +32,5 @@ asBtn.addEventListener("click", as);
 theme.addEventListener("click", () => {
   document.body.classList.toggle("dark");
 });
+
+render();
