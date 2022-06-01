@@ -1,0 +1,4 @@
+export const INCREMENT = "INCREMENT";
+export const DECREMENT = "DECREMENT";
+export const ASYNC_DECREMENT = "ASYNC_DECREMENT";
+export const CHANGE_THEME = "CHANGE_THEME";
