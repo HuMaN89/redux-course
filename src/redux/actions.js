@@ -1,17 +1,33 @@
-import { ASYNC_DECREMENT, CHANGE_THEME, DECREMENT, INCREMENT } from "./types";
+import {
+  CHANGE_THEME,
+  DECREMENT,
+  DISABLED_BTNS,
+  ENABLED_BTNS,
+  INCREMENT,
+} from "./types";
 
 export function increment() {
   return {
     type: INCREMENT,
   };
 }
+export function disabledBtns() {
+  return {
+    type: DISABLED_BTNS,
+  };
+}
+export function enabledBtns() {
+  return {
+    type: ENABLED_BTNS,
+  };
+}
 export function asyncDecrement(addBtn) {
   return function (dispatch) {
-    addBtn.disabled = true;
+    dispatch(disabledBtns());
 
     setTimeout(() => {
-      dispatch({ type: ASYNC_DECREMENT });
-      addBtn.disabled = false;
+      dispatch({ type: DECREMENT });
+      dispatch(enabledBtns());
     }, 2000);
   };
 }

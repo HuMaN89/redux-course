@@ -1,4 +1,4 @@
-import { applyMiddleware, legacy_createStore } from "redux";
+import { applyMiddleware, legacy_createStore, compose } from "redux";
 import { rootReducer } from "./redux/rootReducer";
 import { DECREMENT, INCREMENT } from "./redux/types";
 import thunk from "redux-thunk";
@@ -17,16 +17,18 @@ const addBtn = document.querySelector("#add"),
   counter = document.querySelector("#counter"),
   theme = document.querySelector("#theme");
 
-const store = legacy_createStore(rootReducer, applyMiddleware(thunk, logger));
+const store = legacy_createStore(
+  rootReducer,
+  compose(
+    applyMiddleware(thunk, logger),
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  )
+);
 addBtn.addEventListener("click", () => {
   store.dispatch(increment());
 });
 subBtn.addEventListener("click", () => {
   store.dispatch(decrement());
-});
-store.subscribe(() => {
-  counter.textContent = store.getState().counter;
-  document.body.className = store.getState().theme.value;
 });
 
 asBtn.addEventListener("click", () => {
@@ -38,4 +40,13 @@ theme.addEventListener("click", () => {
 
   // document.body.classList.toggle("dark");
 });
+
+store.subscribe(() => {
+  counter.textContent = store.getState().counter;
+  document.body.className = store.getState().theme.value;
+  [addBtn, subBtn, asBtn].forEach(
+    (btn) => (btn.disabled = store.getState().theme.disabled)
+  );
+});
+
 store.dispatch({ type: "START" });
